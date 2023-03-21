@@ -1,0 +1,3 @@
+# Ignore all except the examples file
+*
+!examples-single-intersection.7z*

@@ -1,0 +1,62 @@
+Bootstrap: docker
+From: ubuntu:22.04
+
+
+%files
+    environment.yml /tmp/environment.yml
+
+%post
+    apt-get -y update
+    apt-get install -y software-properties-common
+
+    # Install SUMO
+    add-apt-repository -y ppa:sumo/stable
+    apt-get -y update
+    apt-get install -y sumo sumo-tools sumo-doc
+
+    # Install other software
+    apt-get install -y tmux htop wget nano
+
+    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh -O /tmp/install-conda.sh
+    /bin/bash /tmp/install-conda.sh -b -p /opt/miniconda3
+    rm /tmp/install-conda.sh
+
+    # Make conda available from the command line.
+    PATH=/opt/miniconda3/bin:$PATH
+    conda init bash
+
+    # Setup virtual env
+    cat /tmp/environment.yml | sed -r '/^\s*- (nvidia|pytorch|gputil)/d' > /tmp/environment_sed.yml  # Removes lines that contain specific keywords
+    conda update conda
+    conda env create --file /tmp/environment_sed.yml && conda clean -a
+    conda install -y -n rl-traffic -c pytorch pytorch cpuonly
+
+    echo ". /opt/miniconda3/etc/profile.d/conda.sh" >> $SINGULARITY_ENVIRONMENT
+    echo "conda activate rl-traffic" >> $SINGULARITY_ENVIRONMENT
+    echo "alias ..='cd ..'" >> $SINGULARITY_ENVIRONMENT
+    echo "alias ll='ls -alFh'" >> $SINGULARITY_ENVIRONMENT
+
+
+%environment
+    export PATH=/opt/miniconda3/bin:$PATH
+    export SUMO_HOME="/usr/share/sumo"
+    # export LIBSUMO_AS_TRACI=1  --> Prints a lot of warnings á la "could not import libsumo, falling back to pure python traci"
+
+
+%runscript
+    . /opt/miniconda3/etc/profile.d/conda.sh
+    conda activate rl-traffic
+    alias ..='cd ..'
+    alias ll='ls -alFh'
+    exec "$@"
+    #exec /bin/bash "$@"
+    #echo "Please use exec instead!"
+
+
+# %startscript
+#     exec /bin/bash "$@"
+
+
+%labels
+    Author Robert Voelckner
+    Date 2022-11

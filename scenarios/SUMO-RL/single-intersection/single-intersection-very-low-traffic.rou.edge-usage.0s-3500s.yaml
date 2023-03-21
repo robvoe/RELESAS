@@ -1,0 +1,6 @@
+# Cached theoretical edge usage in the timeframe from 0s to 3500s
+# For more info see:  edge_usage_counter.py, get_theoretical_edge_usage()
+n_t: 49.37142857142857
+t_e: 36.0
+t_s: 49.37142857142857
+w_t: 36.0

@@ -1,0 +1,12 @@
+# Cached theoretical edge usage in the timeframe from 25200s to 28800s
+# For more info see:  edge_usage_counter.py, get_theoretical_edge_usage()
+-28198821#4: 299.0
+-32038056#3: 572.0
+'130165204': 112.0
+23429231#1: 688.0
+27115123#2: 204.0
+27115123#3: 313.0
+28198821#3: 439.0
+32038051#0: 882.0
+32038056#0: 491.0
+32324544#0: 335.0

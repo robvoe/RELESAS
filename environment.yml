@@ -1,0 +1,24 @@
+name: RELESAS
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  # - nvidia::cudatoolkit=11.1   # --> Include this to allow GPU trainings. That's however not quite useful in our case
+  - pytorch::pytorch==1.11.0
+  - conda-forge::dacite
+  - matplotlib
+  - cython  # To accelerate the PyCharm debugger
+  - numpy
+  - pandas
+  - pytest
+  - tqdm
+  - pyyaml
+  - seaborn
+  - jupyter
+  - pip:
+      - tensorboard
+      - gym==0.23
+      - ray[rllib]==2.0.0
+      - sumolib
+      - traci
+      - gputil
